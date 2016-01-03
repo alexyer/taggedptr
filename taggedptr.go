@@ -35,6 +35,11 @@ func GetTag(ptr unsafe.Pointer) uint {
 	return uint(uintptr(ptr) & uintptr(MAX_TAG_SIZE))
 }
 
+// Get pair of pointer and tag values.
+func Get(ptr unsafe.Pointer) (unsafe.Pointer, uint) {
+	return GetPointer(ptr), GetTag(ptr)
+}
+
 // Compare and swap tagged pointer.
 func CompareAndSwap(addr *unsafe.Pointer, oldPtr, newPtr unsafe.Pointer, oldTag, newTag uint) bool {
 	var err error

@@ -55,3 +55,14 @@ func TestCompareAndSwap(t *testing.T) {
 		t.Fatal("wrong cas")
 	}
 }
+
+func TestGet(t *testing.T) {
+	s := &TestStruct{42}
+	initialPtr := unsafe.Pointer(s)
+	newPtr, _ := Tag(unsafe.Pointer(s), 3)
+	s = (*TestStruct)(newPtr)
+
+	if ptr, tag := Get(unsafe.Pointer(s)); ptr != initialPtr || tag != 3 {
+		t.Fatalf("wrong get. expected: %p %d, got: %p %d", initialPtr, 3, ptr, tag)
+	}
+}
