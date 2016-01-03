@@ -30,4 +30,7 @@ tag := GetTag(unsafe.Pointer(s))
 // Tag, compare and swap pointer
 casPtr := unsafe.Pointer(s)
 CompareAndSwap(&casPtr, casPtr, casPtr, 0, 1)
+
+// Get both pointer and tag values
+ptr, tag := Get(unsafe.Pointer(s))
 ```
