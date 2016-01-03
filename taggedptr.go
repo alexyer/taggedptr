@@ -8,6 +8,7 @@ package taggedptr
 
 import (
 	"errors"
+	"sync/atomic"
 	"unsafe"
 )
 
@@ -32,4 +33,19 @@ func GetPointer(ptr unsafe.Pointer) unsafe.Pointer {
 // Return the current value of the tag.
 func GetTag(ptr unsafe.Pointer) uint {
 	return uint(uintptr(ptr) & uintptr(MAX_TAG_SIZE))
+}
+
+// Compare and swap tagged pointer.
+func CompareAndSwap(addr *unsafe.Pointer, oldPtr, newPtr unsafe.Pointer, oldTag, newTag uint) bool {
+	var err error
+
+	if oldPtr, err = Tag(oldPtr, oldTag); err != nil {
+		return false
+	}
+
+	if newPtr, err = Tag(newPtr, newTag); err != nil {
+		return false
+	}
+
+	return atomic.CompareAndSwapPointer(addr, oldPtr, newPtr)
 }

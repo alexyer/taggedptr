@@ -26,4 +26,8 @@ initialPtr := GetPointer(unsafe.Pointer(s))
 
 // Get tag
 tag := GetTag(unsafe.Pointer(s))
+
+// Tag, compare and swap pointer
+casPtr := unsafe.Pointer(s)
+CompareAndSwap(&casPtr, casPtr, casPtr, 0, 1)
 ```

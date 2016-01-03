@@ -45,3 +45,13 @@ func TestGetTag(t *testing.T) {
 		t.Fatalf("got wrong pointer. expected: %d, got: %d", 3, tag)
 	}
 }
+
+func TestCompareAndSwap(t *testing.T) {
+	s := &TestStruct{42}
+	casPtr := unsafe.Pointer(s)
+	initialPtr := unsafe.Pointer(s)
+
+	if _ = CompareAndSwap(&casPtr, casPtr, casPtr, 0, 1); casPtr != unsafe.Pointer(uintptr(initialPtr)|1) {
+		t.Fatal("wrong cas")
+	}
+}
