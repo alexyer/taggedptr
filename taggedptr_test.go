@@ -66,3 +66,13 @@ func TestGet(t *testing.T) {
 		t.Fatalf("wrong get. expected: %p %d, got: %p %d", initialPtr, 3, ptr, tag)
 	}
 }
+
+func TestAttempTag(t *testing.T) {
+	s := &TestStruct{42}
+	casPtr := unsafe.Pointer(s)
+	initialPtr := unsafe.Pointer(s)
+
+	if _ = AttemptTag(&casPtr, casPtr, 1); casPtr != unsafe.Pointer(uintptr(initialPtr)|1) {
+		t.Fatal("wrong tag attempt")
+	}
+}

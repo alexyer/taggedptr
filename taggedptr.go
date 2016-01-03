@@ -40,6 +40,17 @@ func Get(ptr unsafe.Pointer) (unsafe.Pointer, uint) {
 	return GetPointer(ptr), GetTag(ptr)
 }
 
+// Atomically tag pointer.
+func AttemptTag(addr *unsafe.Pointer, expectedPtr unsafe.Pointer, tag uint) bool {
+	taggedPtr, err := Tag(expectedPtr, tag)
+
+	if err != nil {
+		return false
+	}
+
+	return atomic.CompareAndSwapPointer(addr, expectedPtr, taggedPtr)
+}
+
 // Compare and swap tagged pointer.
 func CompareAndSwap(addr *unsafe.Pointer, oldPtr, newPtr unsafe.Pointer, oldTag, newTag uint) bool {
 	var err error
